@@ -78,13 +78,15 @@ You can run a live version of this sample by running
 from the [examples/testingSimpleConfig](../examples/testingSimpleConfig) directory of this project.
 
 This sample sets up JSON configuration to load the `examples.simpleConfig` application from this module's `examples` directory, and then
-defines a single request test component, named `getRequest`, of type `kettle.test.request.http` which targets its path. The `sequence` section
+defines a single request test component, named `getRequest`, of type `kettle.test.request.http` which targets its path. It also sets the expected number of successful assertions by specifying `expect: 2`. The `sequence` section
 of the configuration then consists of two elements – the first sends the request, and the second listens for the `onComplete` event fired by
 the request and verifies that the returned payload is exactly as expected.
 
 Note the use of two particular pieces of Kettle's infrastructure – firstly the use of module-relative paths, where we use the contextualised
 reference `%kettle` in order to resolve a file path relative to the base directory of this module, and secondly the Kettle testing assert function
 [`kettle.test.assertJSONResponse`](#helper-methods-for-making-assertions-on-oncomplete), which is a helpful all-in-one utility for verifying an HTTP response status code as well as response payload.
+
+Also, note that `expect: 2` requires that there need to be 2 successfull assertions. However, it appears from the sample that there is going to be only 1 assertion (by comparison with the `expected` data). But there are infact 2 assertions being made in the background by Kettle. This can be found in Kettle's source code [here](https://github.com/fluid-project/kettle/blob/23720ce8375b399708035ec000abbf74a3108875/lib/test/KettleTestUtils.http.js#L164-L182), where one assert tests the expected structure of the response and the other tests the response status code.
 
 <a id="#kettle.test.request.http"></a>
 
