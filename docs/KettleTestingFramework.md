@@ -442,6 +442,32 @@ Analogous with `kettle.test.request.httpCookie`, there is a session-aware varian
 with that of `kettle.test.request.httpCookie`, in particular being able to share access to the same `kettle.test.cookieJar` component to enable a mixed series of HTTP and WebSockets requests
 to be contextualised by the same session cookies.
 
+## Running multiple tests together
+It is very easy to run multiple tests together in Kettle. You can simply include all the files in one using `require` and run that file.\
+For example,
+```
+"use strict";
+
+var fluid = require("infusion");
+var kettle = require("kettle");
+
+kettle.loadTestingSupport();
+
+// array of paths to all tests (relative to the file containing this code) we want to run together
+var testIncludes = [
+    "path/to/test/one",
+    "path/to/test/two",
+    .
+    .
+    .
+];
+
+fluid.each(testIncludes, function (path) {
+    require(path);
+});
+```
+It is generally a good idea to have such a file in your project, when there are considerable number of tests to run.\
+For reference, you can see Kettle's own such file [here](https://github.com/fluid-project/kettle/blob/master/tests/all-tests.js)
 ## Framework tests
 
 Please consult the [test cases](../tests) for the framework for more examples of Kettle primitives as well as the Kettle testing framework in action.
